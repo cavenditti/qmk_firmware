@@ -15,10 +15,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t current_layer = get_highest_layer(layer_state|default_layer_state);
+    uint8_t hlkeys[6] = {29, 30, 31, 65, 66, 67};
+
     if (host_keyboard_led_state().caps_lock) {
+        /*
         for (uint8_t i = led_min; i <= led_max; i++) {
             if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
                 rgb_matrix_set_color(i, RGB_RED);
+            }
+        }
+        */
+        for (uint8_t i = 0; i < sizeof(hlkeys) / sizeof(uint8_t); i++) {
+            switch (current_layer) {
+                case 1:
+                    rgb_matrix_set_color(hlkeys[i], RGB_CYAN);
+                    break;
+                case 2:
+                    rgb_matrix_set_color(hlkeys[i], RGB_GREEN);
+                    break;
+                default:
+                    rgb_matrix_set_color(hlkeys[i], RGB_RED);
+                    break;
+            }
+        }
+    } else {
+        for (uint8_t i = 0; i < sizeof(hlkeys) / sizeof(uint8_t); i++) {
+            switch (current_layer) {
+                case 1:
+                    rgb_matrix_set_color(hlkeys[i], RGB_TURQUOISE);
+                    break;
+                case 2:
+                    rgb_matrix_set_color(hlkeys[i], RGB_CHARTREUSE);
+                    break;
+                default:
+                    rgb_matrix_set_color(hlkeys[i], RGB_CORAL);
+                    break;
             }
         }
     }
